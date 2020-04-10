@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <link rel="stylesheet" type="text/css" href="change.css">
+    <title>Avidemux Changelog</title>
+</head>
+<body>
+    <div id="inner">
+        <h1>Changes in Avidemux v2.7.2 – v2.7.4</h1>
+        <table>
+            <tr><td>New Feature:</td><td>Detect and warn when cut points in H.264 video streams may result in playback issues despite being on keyframes</td></tr>
+            <tr><td>FFmpeg:</td><td>Update to the 4.1.4 release</td></tr>
+            <tr><td>Core:</td><td>Fix MSVC++ builds do not run when the path to user directory contains non-ASCII characters</td></tr>
+            <tr><td>Decoder:</td><td>Fix DXVA2 HW accelerated decoding on Windows 7</td></tr>
+            <tr><td>Decoder:</td><td>Fix DXVA2 HW accelerated decoding stops sometimes on cuts</td></tr>
+            <tr><td>Decoder:</td><td>Enable HW accelerated decoding of 8-bit HEVC for recent versions of Intel graphics driver on Windows</td></tr>
+            <tr><td>Encoder:</td><td>Fix regression with saved x264 and x265 profiles not found (MSVC++ only)</td></tr>
+            <tr><td>Demuxer:</td><td>Dynamically load VapourSynth Script library to avoid error messages on Windows if VapourSynth is not found</td></tr>
+            <tr><td>Demuxer:</td><td>Provide correct average audio bitrate in the Mp4 demuxer if the exact value for the particular codec is unknown</td></tr>
+            <tr><td>Demuxer:</td><td>Fix crash loading MP4 file with number of audio tracks exceeding the max supported</td></tr>
+            <tr><td>Demuxer:</td><td>Support audio tracks in fragmented MP4 files (the variety with empty moov only)</td></tr>
+            <tr><td>Demuxer:</td><td>Support E-AC3 audio tracks in MP4 files</td></tr>
+            <tr><td>Demuxer:</td><td>Fix ASF demuxer still broken by chance with MSVC++ only, the fix relevant for all platforms</td></tr>
+            <tr><td>Demuxer:</td><td>Support more varieties of BMP images</td></tr>
+            <tr><td>Muxer:</td><td>Optimize output of the Mp4 muxer for streaming on Windows too</td></tr>
+            <tr><td>Muxer:</td><td>Add option to the Mp4 muxer to output fragmented MP4 files</td></tr>
+            <tr><td>Muxer:</td><td>Label HEVC video in Mp4 in a way compatible with QuickTime on macOS</td></tr>
+            <tr><td>Filter:</td><td>Fix assembly in Yadif deinterlacer with MSVC++</td></tr>
+            <tr><td>UI:</td><td>Enable automatic application scaling on Windows for recent Qt versions</td></tr>
+            <tr><td>UI:</td><td>Fix silent mode, automatically confirm dialogs instead of choosing the default option</td></tr>
+            <tr><td>Audio:</td><td>Support WMAPRO audio codec for decoding</td></tr>
+            <tr><td>Audio:</td><td>Support AAC with signal band replication (SBR) in external audio tracks</td></tr>
+            <tr><td>Audio:</td><td>Fix saving AAC audio tracks with SBR to a file</td></tr>
+            <tr><td>Audio:</td><td>Improve resilience to false positives when probing external audio files for AAC</td></tr>
+            <tr><td>Miscellaneous:</td><td>Fix crash with OpenGL or DXVA2 video output in 32 bits Avidemux on Windows (better late than never)</td></tr>
+            <tr><td>Miscellaneous:</td><td>Fix regressed handling of empty frames in MPEG-4 and FRAPS video streams</td></tr>
+            <tr><td>Miscellaneous:</td><td>Numerous other fixes and polish</td></tr>
+        </table>
+    </div>
+</body>
+</html>

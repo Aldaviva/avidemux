@@ -1,0 +1,88 @@
+******************************************************************************
+***            Cross-compiling Avidemux on Linux for Windows               ***
+***                                                                        ***
+***          Description of the default build environment setup            ***
+******************************************************************************
+
+
+1. Install MXE (M cross environment) dependencies as described in
+
+    http://mxe.cc/#requirements
+
+for your respective Linux distribution then clone the git repository as
+described in
+
+    http://mxe.cc/#download
+
+to /opt:
+
+    cd /opt
+    git clone https://github.com/mxe/mxe.git
+
+(make /opt temporarily writable by the user or clone as root / using sudo).
+Change the owner and the group of /opt/mxe to those of the user. In the
+exemplary setup the 'mxe' folder has been subsequently moved elsewhere and
+then bind-mounted to /opt/mxe to save write cycles of an SSD where /opt
+resides. This has been done purely for convenience and is not required.
+
+
+2. Create /opt/mxe/settings.mk with
+
+MXE_TARGETS :=  i686-w64-mingw32.shared x86_64-w64-mingw32.shared
+
+as content to build both 32 bit and 64 bit environments. Optionally, you can
+set the variable MXE_TMP which determines where intermediate files are created
+(e.g. to /tmp) by adding
+
+MXE_TMP := /tmp
+
+to the settings.mk file.
+
+
+3. Build required MXE packages for the targets specified above with
+
+    cd /opt/mxe
+    make qttools qtwinextras sdl2 ogg vorbis lame a52dec faad2 fdk-aac libmad opus fribidi libass xvidcore x264 x265
+
+This pulls in all the dependencies and can take a couple of hours. The final
+total size of the /opt/mxe folder may be about 2.2G. Please note that twolame
+is not available as a shared library and x265 has not been packaged for MXE as
+of this writing.
+
+
+4. To enable hardware-accelerated encoding provided by NVIDIA graphics cards of
+the Kepler generation and later, download the file "nvEncodeAPI.h" e.g. from
+
+    https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/compat/nvenc/nvEncodeAPI.h
+
+and copy it to /opt/mxe/usr/i686-w64-mingw32.shared/include/ or
+/opt/mxe/usr/x86_64-w64-mingw32.shared/include/ correspondingly.
+
+
+5. Create a user-writable directory 'out' in '/opt/mxe/usr/x86_64-w64-mingw32.shared'
+and in '/opt/mxe/usr/i686-w64-mingw32.shared' respectively.
+
+
+6. Enter the Avidemux top source directory and run
+
+    bash bootStrapCrossMingwQt5_mxe.sh
+
+to cross-compile a 32 bit Avidemux version or
+
+    bash bootStrapCrossMingwQt5_mxe.sh --64
+
+to cross-compile a 64 bit version. Run
+
+    bash bootStrapCrossMingwQt5_mxe.sh -h
+
+to see the list of all available options. It is assumed that 'zip' utility is
+installed and in $PATH. Copy the 'avidemux_rYYMMDD-hhmmss_win{32,64}Qt5.zip'
+file from the 'packaged_mingw_build_YYMMDD-hhmmss' directory to a Windows
+partition, extract it on Windows and run 'avidemux.exe' from there.
+
+
+7. Issues:
+
+As of this writing, twolame, aften, vapoursynth and avsproxy are not available.
+
+2017-11-01 UTC 23:05

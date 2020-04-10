@@ -1,0 +1,14 @@
+--- libavcodec/nvenc.c.orig	2017-10-20 22:17:13.506948923 +0200
++++ libavcodec/nvenc.c	2017-10-20 22:17:37.312801259 +0200
+@@ -1875,8 +1875,11 @@
+         tmpoutsurf->input_surface = NULL;
+     }
+ 
++    avctx->coded_frame->key_frame = 0;
++
+     switch (lock_params.pictureType) {
+     case NV_ENC_PIC_TYPE_IDR:
++        avctx->coded_frame->key_frame = 1;
+         pkt->flags |= AV_PKT_FLAG_KEY;
+     case NV_ENC_PIC_TYPE_I:
+         pict_type = AV_PICTURE_TYPE_I;

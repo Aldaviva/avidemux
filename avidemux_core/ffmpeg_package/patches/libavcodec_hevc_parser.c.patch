@@ -1,0 +1,70 @@
+--- libavcodec/hevc_parser.c.orig	2017-10-15 17:59:37.000000000 +0200
++++ libavcodec/hevc_parser.c	2017-10-20 20:05:01.724505874 +0200
+@@ -31,6 +31,13 @@
+ #include "internal.h"
+ #include "parser.h"
+ 
++/* MEANX */
++HEVCSPS *ff_hevc_parser_get_sps(AVCodecParserContext *s);
++HEVCPPS *ff_hevc_parser_get_pps(AVCodecParserContext *s);
++HEVCVPS *ff_hevc_parser_get_vps(AVCodecParserContext *s);
++/* /MEANX */
++
++
+ #define START_CODE 0x000001 ///< start_code_prefix_one_3bytes
+ 
+ #define IS_IRAP_NAL(nal) (nal->type >= 16 && nal->type <= 23)
+@@ -171,6 +178,53 @@
+ }
+ 
+ /**
++ \fn ff_hevc_parser_get_sps
++\brief meanx : extract sps from context
++*/
++HEVCSPS *ff_hevc_parser_get_sps(AVCodecParserContext *s)
++{
++      HEVCParserContext *ctx = s->priv_data;
++      if(!ctx) return NULL;
++      HEVCParamSets     *ps = &ctx->ps;
++      if(!ps) return NULL;
++
++     HEVCSPS *sps = ps->sps;
++     return sps;
++}
++/**
++ \fn ff_hevc_parser_get_sps
++\brief meanx : extract sps from context
++*/
++HEVCPPS *ff_hevc_parser_get_pps(AVCodecParserContext *s)
++{
++      HEVCParserContext *ctx = s->priv_data;
++      if(!ctx) return NULL;
++      HEVCParamSets     *ps = &ctx->ps;
++      if(!ps) return NULL;
++
++     HEVCPPS *pps = ps->pps;
++     return pps;
++}
++/**
++ \fn ff_hevc_parser_get_sps
++\brief meanx : extract sps from context
++*/
++HEVCVPS *ff_hevc_parser_get_vps(AVCodecParserContext *s)
++{
++      HEVCParserContext *ctx = s->priv_data;
++      if(!ctx) return NULL;
++      HEVCParamSets     *ps = &ctx->ps;
++      if(!ps) return NULL;
++
++     HEVCVPS *vps = ps->vps;
++     return vps;
++}
++// /MEANX
++
++/**
++
++
++/**
+  * Parse NAL units of found picture and decode some basic information.
+  *
+  * @param s parser context.
