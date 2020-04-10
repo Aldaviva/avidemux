@@ -1360,6 +1360,7 @@ bool MainWindow::eventFilter(QObject* watched, QEvent* event)
         case QEvent::Resize:
             if(watched == QuiMainWindows)
             {
+	      ADM_info("main window got resize event\n");
                 if(blockZoomChanges || playing || !avifileinfo)
                     break;
                 if(ignoreResizeEvent)
@@ -1411,8 +1412,9 @@ bool MainWindow::eventFilter(QObject* watched, QEvent* event)
 
                 if(zoom > oldzoom + .001 || zoom < oldzoom - .001)
                 {
+		  ADM_info("zoom changed, calling setMainDimension()\n");
                     blockResizing = true;
-                    admPreview::setMainDimension(w,h,zoom);
+                    admPreview::setMainDimension(w, h, zoom, false);
                     actZoomCalled = false;
                     admPreview::samePicture(); // required at least for VDPAU
                     blockResizing = false;
@@ -1697,7 +1699,8 @@ uint8_t initGUI(const vector<IScriptEngine*>& scriptEngines)
 #if QT_VERSION < QT_VERSION_CHECK(5,11,0) // not sure about the version
     mw->ui.frame_video->setAcceptDrops(true); // needed for drag and drop to work on windows
 #endif
-    admPreview::setMainDimension(0,0,ZOOM_1_1);
+    ADM_info("setting main dimension to 0x0\n");
+    admPreview::setMainDimension(0, 0, ZOOM_1_1, false);
 
     UI_updateRecentMenu();
     UI_updateRecentProjectMenu();

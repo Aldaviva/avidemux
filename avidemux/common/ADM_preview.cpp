@@ -79,12 +79,13 @@ ADM_HW_IMAGE admPreview::getPreferedHwImageFormat(void)
       @param h : height
 */
 
-void admPreview::setMainDimension(uint32_t w, uint32_t h, float nzoom)
+void admPreview::setMainDimension(uint32_t w, uint32_t h, float nzoom, bool skipWindowResize)
 {
+  ADM_info("setMainDimension(width=%d, height=%d, nzoom=%f, skipWindowResize=%d)\n", w, h, nzoom, skipWindowResize);
     destroy();
     if(!w || !h)
     {
-        renderDisplayResize(0,0,ZOOM_1_1);
+      renderDisplayResize(0,0,ZOOM_1_1,false);
         UI_setDisplayName("XXXX");
         return;
     }
@@ -113,7 +114,7 @@ void admPreview::setMainDimension(uint32_t w, uint32_t h, float nzoom)
       }
   }
   zoom=nzoom;
-  renderDisplayResize(rdrPhysicalW,rdrPhysicalH,zoom);
+  renderDisplayResize(rdrPhysicalW,rdrPhysicalH,zoom, skipWindowResize);
  // Install our hook, we will do it more than needed
  // but it does not really harm
   renderHookRefreshRequest(admPreview::updateImage);
@@ -148,7 +149,7 @@ void changePreviewZoom(float nzoom)
     admPreview::stop();
     ADM_info("Preview :: Change zoom %.4f->%.4f\n",zoom,nzoom);
     zoom=nzoom;
-    renderDisplayResize(rdrPhysicalW,rdrPhysicalH,zoom);
+    renderDisplayResize(rdrPhysicalW,rdrPhysicalH,zoom, false);
     admPreview::start();
 }
 

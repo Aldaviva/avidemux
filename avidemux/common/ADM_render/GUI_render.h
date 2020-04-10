@@ -31,7 +31,7 @@ typedef bool (*refreshSB)(void);
 
 ADM_RENDER6_EXPORT uint8_t renderInit( void );
 ADM_RENDER6_EXPORT void    renderDestroy(void);
-ADM_RENDER6_EXPORT uint8_t renderDisplayResize(uint32_t w, uint32_t h, float zoom);
+ADM_RENDER6_EXPORT uint8_t renderDisplayResize(uint32_t w, uint32_t h, float zoom, bool skipWindowResize);
 uint8_t renderRefresh(void);
 ADM_RENDER6_EXPORT uint8_t renderExpose(void);
 ADM_RENDER6_EXPORT uint8_t renderUpdateImage(ADMImage *img);
@@ -52,7 +52,7 @@ ADM_RENDER6_EXPORT bool    renderClearInstance(void);
 
 void *UI_getDrawWidget(void);
 void UI_rgbDraw(void *widg,uint32_t w, uint32_t h,uint8_t *ptr);
-void UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h);
+void UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h, bool skipWindowResize);
 void UI_getWindowInfo(void *draw, GUI_WindowInfo *xinfo);
 void UI_resize(uint32_t width, uint32_t height);
 bool UI_getNeedsResizingFlag(void);

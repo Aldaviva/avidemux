@@ -7,7 +7,7 @@
 #include "ADM_render/GUI_render.h"
 
 void UI_rgbDraw(void *widg,uint32_t w, uint32_t h,uint8_t *ptr) {}
-void UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h) {}
+void UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h, bool skipWindowResize) {}
 void UI_getWindowInfo(void *draw, GUI_WindowInfo *xinfo) {}
 void *UI_getDrawWidget(void ) {return NULL;}
 

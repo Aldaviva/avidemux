@@ -162,9 +162,9 @@ void *UI_getDrawWidget(void)
 /**
       \brief Resize the window
 */
-void  UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h)
+void  UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h, bool skipWindowResize)
 {
-  ADM_info("UI_updateDrawWindowSize(win, %d, %d)\n", w, h);
+  ADM_info("UI_updateDrawWindowSize(win, %d, %d, %d)\n", w, h, skipWindowResize);
 
     displayW = w;
     displayH = h;
@@ -174,9 +174,13 @@ void  UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h)
     // Instead, resize the window later on restore event if necessary.
     if(!QuiMainWindows->isMaximized())
     {
+      // Ben: only resize window if the new dimensions are not 0x0
       if(w && h){
         UI_setBlockZoomChangesFlag(true);
-        UI_resize(w,h);
+	if(!skipWindowResize){
+	  // Ben: don't resize the window when first opening a file
+	  UI_resize(w,h);
+	}
         UI_setBlockZoomChangesFlag(false);
         UI_setNeedsResizingFlag(false);
       } else {

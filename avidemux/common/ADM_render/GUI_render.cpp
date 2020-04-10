@@ -110,10 +110,10 @@ void MUI_getWindowInfo(void *draw, GUI_WindowInfo *xinfo)
   RENDER_CHECK(UI_getWindowInfo);
   HookFunc->UI_getWindowInfo(draw, xinfo);
 }
-static void MUI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h)
+static void MUI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h, bool skipWindowResize)
 {
    RENDER_CHECK(UI_updateDrawWindowSize);
-   HookFunc->UI_updateDrawWindowSize(win,w,h);
+   HookFunc->UI_updateDrawWindowSize(win,w,h, skipWindowResize);
 }
 static   ADM_RENDER_TYPE MUI_getPreferredRender(void)
 {
@@ -175,11 +175,11 @@ uint8_t renderUnlock(void)
 
 */
 //----------------------------------------
-uint8_t renderDisplayResize(uint32_t w, uint32_t h, float zoom)
+uint8_t renderDisplayResize(uint32_t w, uint32_t h, float zoom, bool skipWindowResize)
 {
         bool create=false;
         enableDraw=false;
-        ADM_info("Render to %" PRIu32"x%" PRIu32" zoom=%.4f, old one =%d x %d, zoom=%.4f, renderer=%p\n",w,h,zoom,phyW,phyH,lastZoom,renderer);
+        ADM_info("Render to %" PRIu32"x%" PRIu32" zoom=%.4f, old one =%d x %d, zoom=%.4f, renderer=%p, skipWindowResize=%d\n",w,h,zoom,phyW,phyH,lastZoom,renderer, skipWindowResize);
         // Check if something has changed...
         
         
@@ -197,20 +197,27 @@ uint8_t renderDisplayResize(uint32_t w, uint32_t h, float zoom)
                 delete renderer;
                 renderer=NULL;
             }
-            phyW=w;
-            phyH=h;
-            lastZoom=zoom;
-            if(w && h)
-                spawnRenderer();
+            if(w && h){
+	      phyW=w;
+	      phyH=h;
+	      lastZoom=zoom;
+	      ADM_info("width and height are non-zero, spawning renderer\n");
+	      spawnRenderer();
+	    }
         }else // only zoom changed
         {
+	  ADM_info("only zoom changed, only changing zoom on renderer\n");
               renderer->changeZoom(zoom);
         }
          // Resize widget to be the same as input after zoom
          lastZoom=zoom;
-        MUI_updateDrawWindowSize(draw,(uint32_t)((float)w*zoom),(uint32_t)((float)h*zoom));
-        if(w && h)
+	 ADM_info("MUI_updateDrawWindowSize()\n");
+	 MUI_updateDrawWindowSize(draw,(uint32_t)((float)w*zoom),(uint32_t)((float)h*zoom), skipWindowResize);
+        if(w && h){
+	  ADM_info("width and height are both non-zero, calling renderCompleteRedrawRequest()\n");
             renderCompleteRedrawRequest();
+	}
+	ADM_info("UI_purge()\n");
         UI_purge();
         return 1;
 }

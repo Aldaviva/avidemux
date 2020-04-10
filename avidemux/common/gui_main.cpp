@@ -1023,8 +1023,9 @@ void  updateLoaded (bool resetMarker)
         wavinfo = (WAVHeader *) NULL;
     }
 
+    ADM_info("initializing renderer without resizing by calling admPreview::setMainDimension(%d, %d, %f, true)\n", avifileinfo->width, avifileinfo->height, ZOOM_AUTO);
   // Init renderer
-    admPreview::setMainDimension(avifileinfo->width, avifileinfo->height, ZOOM_AUTO);
+    admPreview::setMainDimension(avifileinfo->width, avifileinfo->height, ZOOM_AUTO, true);
   // Draw first frame
     GUI_setAllFrameAndTime();
     if(resetMarker)
@@ -1700,7 +1701,7 @@ uint8_t GUI_close(void)
         admPreview::stop();
         setPreviewMode(ADM_PREVIEW_NONE);
       }
-      admPreview::setMainDimension(0, 0, ZOOM_1_1); // destroy preview
+      admPreview::setMainDimension(0, 0, ZOOM_1_1, false); // destroy preview
       UI_setNeedsResizingFlag(false);
       uint32_t zero[6]={0};
       UI_setVUMeter(zero);

@@ -84,7 +84,7 @@ void UI_rgbDraw(void *widg,uint32_t w, uint32_t h,uint8_t *ptr)
 /**
       \brief Resize the window
 */
-void  UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h)
+void  UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h, bool skipWindowResize)
 {
     gtk_window_set_resizable(GTK_WINDOW(guiRootWindow), FALSE);
     gtk_widget_set_size_request((GtkWidget *)win, w, h);

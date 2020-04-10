@@ -152,7 +152,7 @@ void GUI_PlayAvi(bool quit)
    // Resize the output window to original size...
    ADM_info("Restoring display.\n");
    
-   admPreview::setMainDimension(info.width,info.height,oldZoom);
+   admPreview::setMainDimension(info.width,info.height,oldZoom, false);
     // If we are processing the video, the current time
     // might not be matching a source video time => PROBLEM
     // Go back to the beginning to be on safe ground
@@ -242,7 +242,7 @@ bool GUIPlayback::initialize(void)
     if(info->width==originalVideo.width && info->height==originalVideo.height)
         zoom=currentZoom;
     //
-    admPreview::setMainDimension(info->width,info->height,zoom);
+    admPreview::setMainDimension(info->width,info->height,zoom, false);
     initializeAudio();
     return true;
 }
