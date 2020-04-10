@@ -45,6 +45,7 @@ extern "C"
 #include "../ADM_render/GUI_render.h"
 #include "../ADM_render/GUI_accelRender.h"
 #include "GUI_ui.h"
+#include "ADM_default.h"
 #include "DIA_coreToolkit.h"
     
 void UI_QT4VideoWidget(QFrame *host);
@@ -163,19 +164,24 @@ void *UI_getDrawWidget(void)
 */
 void  UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h)
 {
+  ADM_info("UI_updateDrawWindowSize(win, %d, %d)\n", w, h);
 
-	displayW = w;
-	displayH = h;
+    displayW = w;
+    displayH = h;
 
     // Resizing a maximized window results in not refreshed areas where widgets 
     // in the maximized state were drawn with Qt5 on Linux, try to avoid this.
     // Instead, resize the window later on restore event if necessary.
     if(!QuiMainWindows->isMaximized())
     {
+      if(w && h){
         UI_setBlockZoomChangesFlag(true);
         UI_resize(w,h);
         UI_setBlockZoomChangesFlag(false);
         UI_setNeedsResizingFlag(false);
+      } else {
+	ADM_info("width and height are both 0, so not resizing window\n");
+      }
     }else
     {
         UI_setNeedsResizingFlag(true);
