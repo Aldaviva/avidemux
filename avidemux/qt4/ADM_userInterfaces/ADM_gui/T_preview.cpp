@@ -190,6 +190,7 @@ void  UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h, bool skipWindowRe
     {
         UI_setNeedsResizingFlag(true);
     }
+
     videoWindow->setADMSize(w,h);
     if(!w || !h)
         QuiMainWindows->update(); // clean up the space previously occupied by the video window on closing
@@ -210,6 +211,14 @@ void  UI_updateDrawWindowSize(void *win,uint32_t w,uint32_t h, bool skipWindowRe
 	UI_purge();
 
 	printf("[RDR] Resizing to %u x %u\n", displayW, displayH);
+
+	if(skipWindowResize){
+	  ADM_info("file opened, so zooming video to window\n");
+	  UI_setBlockZoomChangesFlag(false);
+	  UI_setNeedsResizingFlag(false);
+	  UI_automaticallyZoomVideoToWindow(-1, -1);
+	}
+
 }
 
 /**
